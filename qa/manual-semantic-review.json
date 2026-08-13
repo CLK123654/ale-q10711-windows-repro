@@ -1,0 +1,11 @@
+{
+  "schema_version":1,"task_key":"id:10711","result":"PASS","business_goal_preserved":true,
+  "role":"质量工程师","consumers":["账号连接服务","安全团队"],
+  "actual_inputs":[{"path":"input_data/fixtures/authorization_cases.json","use":"提供本批授权路径、state和预期终态"},{"path":"input_data/rules/popup_protocol.json","use":"提供消息类型、来源模式、确认端点、超时和交付路径"},{"path":"input_data/app/merchant.html与provider.html","use":"提供商户状态机和跨源授权页"},{"path":"input_data/starter、tools、package.json与node_modules","use":"提供待完成程序、业务入口和Playwright依赖"}],
+  "continuous_actions":["启动三个不同origin的回环页面","为每个案例建立独立context并打开真实popup","按origin和source检查消息来源","按类型、state和result裁决消息","建立授权、拒绝、超时或关窗终态","记录确认请求、报告与截图并生成对账摘要"],
+  "primary_software_necessity":"Playwright提供真实browser context、popup对象、page事件、跨源postMessage、locator、页面状态和截图。静态脚本或HTTP客户端不能替代event.source与浏览器终态行为。",
+  "hard_numeric_sources":[{"value":"6个案例","source":"authorization_cases.json条目数"},{"value":"360毫秒授权超时","source":"popup_protocol.json的authorization_timeout_ms"},{"value":"三份CSV、一个对账摘要和按案例截图","source":"popup_protocol.json的required_outputs与Prompt交付合同"},{"value":"Playwright1.62兼容版本与Node.js20","source":"输入包package.json"}],
+  "reference_integrity":"题目只引用随包的授权案例、协议、页面、starter、入口和依赖，没有外部链接、来源不明规则或伪引用。",
+  "reasoning_chain":"Prompt从真实popup进入origin与source检查，再进入类型、state和result裁决，随后建立终态、确认幂等和报告；评分八项覆盖同一链；五页答案给出路径、字段、集合、数值和容差；Reference含程序、三份CSV、对账摘要和截图。",
+  "prompt_delivery_score_answer_reference_closed":true,"hallucination":false,"fake_citation":false,"broken_reasoning_chain":false,"answer_leakage_in_prompt_or_score":false,"static_or_online_ai_score_used_as_sole_conclusion":false
+}
