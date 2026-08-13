@@ -1,0 +1,97 @@
+总分100分
+
+1. 输入合同与案例隔离
+分值：14分
+标准答案或判定规则：authorization_cases.json中的case_id唯一，来源模式均在popup_protocol.json声明，state与expected结构完整；每个案例使用独立browser context并保留自己的popup对象。
+关键字段或路径：fixtures/authorization_cases.json；rules/popup_protocol.json；output/src/popup_authorization.spec.mjs；scenario_results.csv
+容差及来源：案例主键、来源模式、state与预期字段无容差，来源为案例和协议；浏览器context按case_id定位。
+未满足时：漏掉案例、复用context造成状态串扰、接受重复case_id或未知来源模式、改写输入，或绕过真实浏览器。
+可观察证据及定位方式：案例合同、程序中的context生命周期和scenario_results.csv按case_id关联。
+客观硬性标准：全部案例进入各自context，主键唯一，来源模式受支持，输入保持不变。
+通过阈值：四项全部满足。
+优先级：Gate项
+所属层级：L2输入与资源准备层
+
+2. 真实弹窗与来源窗口检查
+分值：14分
+标准答案或判定规则：程序从商户页按钮打开真实popup，并以context的page事件取得窗口；每条消息先检查event.origin和event.source，失败消息不触发确认请求。
+关键字段或路径：app/merchant.html；app/provider.html；popup_authorization.spec.mjs；message_audit.csv中的origin_class、source_match、decision、reason
+容差及来源：origin、source_match、decision与reason无容差，来源为浏览器消息事件和协议；回环端口可变。
+未满足时：直接调用页面函数、伪造消息台账、只检查消息内容、不区分可信origin、未绑定当前popup，或非可信消息触发确认。
+可观察证据及定位方式：Playwright的点击与page事件、消息台账、确认请求和对应场景截图。
+客观硬性标准：所有消息来自真实弹窗流程，来源与窗口对象都在裁决前检查，无效来源没有确认副作用。
+通过阈值：三项全部满足。
+优先级：Gate项
+所属层级：L7交互行为与状态转换层
+
+3. 消息类型、state与结果裁决
+分值：13分
+标准答案或判定规则：消息类型必须等于协议给定值，state与当前案例逐字符相同，result只接受approved或declined；任一条件不符都写为rejected并保留明确reason。
+关键字段或路径：popup_protocol.json中的message_type、approved_result、declined_result；authorization_cases.json中的state；message_audit.csv
+容差及来源：消息类型、state、result、decision与reason无容差，来源为协议、案例和浏览器消息。
+未满足时：忽略消息类型或state、自动修正错误state、未知result进入终态、拒绝消息被写为accepted，或错误消息调用确认端点。
+可观察证据及定位方式：消息台账按case_id和message_index定位，received_state与案例state逐项比较。
+客观硬性标准：裁决顺序固定，合法消息唯一进入accepted，无效消息留下可追溯原因且不产生确认。
+通过阈值：三项全部满足。
+优先级：高权重项
+所属层级：L6领域计算与专业规则层
+
+4. 授权终态与弹窗收口
+分值：12分
+标准答案或判定规则：合法approved进入authorized，合法declined进入declined，无效消息继续等待直到timed_out，用户关窗进入user_closed；终态建立后页面关闭仍存活的popup且状态不可再次变化。
+关键字段或路径：authorization_cases.json中的expected；scenario_results.csv中的final_status、popup_closed、passed；output/evidence
+容差及来源：终态、弹窗关闭状态和案例身份无容差，来源为案例合同和商户页状态机；截图像素差异不影响字段判定。
+未满足时：把关窗视为超时、拒绝仍发确认、超时后popup残留、终态可再次变化，或场景与截图身份不符。
+可观察证据及定位方式：场景结果按case_id关联页面终态和同名截图。
+客观硬性标准：每个案例只有一个合同允许的终态，popup最终关闭，截图与case_id一一对应。
+通过阈值：三项全部满足。
+优先级：高权重项
+所属层级：L7交互行为与状态转换层
+
+5. 确认请求与重复消息幂等
+分值：12分
+标准答案或判定规则：只有合法approved向协议规定的本地端点提交state和authorization_code，每个案例最多确认一次；终态后的消息写为rejected且reason为terminal_reached，不改变已有终态。
+关键字段或路径：popup_protocol.json中的confirmation_path；authorization_cases.json；authorization_requests.csv；message_audit.csv；scenario_results.csv
+容差及来源：case_id、state、authorization_code、请求次序和确认次数无容差，来源为案例、协议和本地端点记录。
+未满足时：批准不确认、declined或无效消息确认、state或授权码错位、重复消息二次POST、请求主键重复，或终态后覆盖已有结果。
+可观察证据及定位方式：确认请求按request_index排序，与消息台账和场景结果按case_id关联。
+客观硬性标准：确认请求只来自合法approved，同一案例至多一条，重复消息没有网络或状态副作用。
+通过阈值：三项全部满足。
+优先级：高权重项
+所属层级：L7交互行为与状态转换层
+
+6. 三份业务报告
+分值：13分
+标准答案或判定规则：scenario_results.csv覆盖全部案例，message_audit.csv按案例和消息到达次序记录协议字段，authorization_requests.csv按实际POST顺序记录确认；三份CSV使用规定表头和稳定主键。
+关键字段或路径：scenario_results.csv；message_audit.csv；authorization_requests.csv；authorization_cases.json
+容差及来源：必要CSV引号、LF或CRLF可不同；表头、主键、字段类型和值无容差，来源为案例、消息事件和本地确认端点。
+未满足时：缺行或重复、列缺失或换序、案例顺序漂移、布尔值不可解析、state或reason错位、报告不能交叉复算，或再次执行追加旧行。
+可观察证据及定位方式：场景按case_id、消息按case_id与message_index、请求按request_index定位并联结。
+客观硬性标准：三份报告可解析，主键唯一，场景计数等于对应消息和请求的汇总。
+通过阈值：三份报告全部满足。
+优先级：高权重项
+所属层级：L9跨产物一致性与可追溯层
+
+7. 对账摘要与跨产物闭合
+分值：12分
+标准答案或判定规则：reconciliation_summary.json从案例、三份业务报告和截图集合汇总案例、消息、确认请求与终态；relationships记录案例覆盖、消息计数、确认幂等、终态分区、来源窗口与截图关系，result只在全部关系成立时为PASS。
+关键字段或路径：reconciliation_summary.json中的result、measures、relationships；三份CSV；output/evidence；authorization_cases.json
+容差及来源：计数为整数且无容差，关系值必须使用布尔类型，来源为当前输入、报告和截图文件名；字段名称允许等义组织。
+未满足时：摘要预填固定统计、关系不可从交付复算、字段类型错误、终态或确认数量矛盾、截图缺失，或result与不一致数量冲突。
+可观察证据及定位方式：摘要字段与案例、CSV主键和截图文件名逐项关联。
+客观硬性标准：全部统计可复算，全部关系成立，result为PASS且inconsistency_count为0。
+通过阈值：三项全部满足。
+优先级：普通项
+所属层级：L9跨产物一致性与可追溯层
+
+8. Playwright交付与失败收口
+分值：10分
+标准答案或判定规则：交付业务源码、三份CSV、对账摘要和按case_id命名的截图；Playwright从相对路径读取输入并覆盖交付，合同无效或流程未闭合时返回非零状态并清除未完成报告与截图。
+关键字段或路径：output/src/popup_authorization.spec.mjs；output/reports；output/evidence；input_data/tools/run-task.mjs；package.json
+容差及来源：路径按Prompt核对，浏览器可使用Chrome或兼容Chromium；退出状态必须反映成功或失败，来源为程序执行结果。
+未满足时：交付缺失或改名、截图与案例不对应、使用作者绝对路径、依赖外部站点、失败返回0，或失败后保留未完成交付。
+可观察证据及定位方式：交付文件树、源码路径与浏览器启动方式、进程退出状态和失败后的output目录。
+客观硬性标准：合同所列交付完整，相对路径可用，浏览器流程不依赖外部站点，失败非零且无残留。
+通过阈值：四项全部满足。
+优先级：普通项
+所属层级：L10异常场景与失败路径层
