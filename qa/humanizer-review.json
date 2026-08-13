@@ -1,0 +1,12 @@
+{
+  "schema_version":1,
+  "task_key":"id:10711",
+  "skill":"humanizer-zh",
+  "result":"PASS",
+  "reviewed_scopes":["任务名称","任务概要","任务prompt","关键动作","评分表","环境依赖","软件步骤","输入包自然语言","Reference自然语言","关键标准答案全部单元格","任务规格全部单元格"],
+  "scores":{"直接性":10,"节奏":9,"信任度":9,"真实性":10,"精炼度":9,"total":47},
+  "minimum_total":45,
+  "notes":["开头直接说明跨源授权的风险、责任角色和下游消费者。","动作按真实弹窗、来源窗口、协议字段、终态与确认幂等展开，没有宣传式背景或模板式自证。","删除互联网标题、夹具化数据称谓、复现与验证过程口吻以及固定答案控制量。"],
+  "reviewed_artifacts_sha256":{"ALE-专家数据作业表.csv":"653207d99388ff18c2b2175e5a4904ef0423213699be280ef568a95eac637388","reference.zip":"a110b5fa50d8a7c576c9fa735af37875c1f5e452a1698c9368246a60d024d7e0","task_fields.json":"82650b394b46d97c4f24c2e75f19d877c98177459aa65ad63974f32483ed6f63","任务prompt.txt":"1d00fee0031d49e6fa014be649af82d6799162f756187df64caf7adfe9d48671","任务名称.txt":"14084fe59b11f3c783637f3a4be70ef704a4a17668714afe2a54ec60e9b7b9bc","任务概要.txt":"5cd3f07103cfeff45146330ef9c04f2692c51914827582f19af928aafe1d1eba","任务规格转化.xlsx":"358b4b7942a313488eac132821e2f898e18b1982e90325d32884614abb50fdcf","关键动作.txt":"142ef0dc78b33a6e175380323ac4218eece113c87af5fe2880e8df16cf576705","关键标准答案.xlsx":"63b440b8a4f9f63fbec11000f446b70e120e7155f12d4e683bb6803b3ef06438","环境依赖.txt":"c5ac522fda08c5eae4d311fa2f25290bb7235fe27e451b129883ab97718f562b","相关专业软件的关键步骤.txt":"515d1a168554b207e73d65bc09b0447bf16df29f7f684014f78c0d0a94846d89","评分表.txt":"9685ec6c3e727bffc4869e56929acdc1703667bd03a2285023197540f5df13c6","输入数据包.zip":"9c4322e63d95815f719d4ae7aaced8e215aa668595d25e89b545af44e85c00e5"},
+  "online_ai_detection_used_as_conclusion":false
+}
