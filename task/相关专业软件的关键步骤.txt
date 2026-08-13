@@ -1,0 +1,9 @@
+1.用Playwright启动本机Chrome或兼容Chromium，并在三个随机回环端口提供商户页、可信授权页和非可信授权页。
+2.解析authorization_cases.json与popup_protocol.json，检查case_id唯一、来源模式受支持、state非空且终态合同完整。
+3.为当前案例建立全新browser context，导航商户页并等待账号连接状态机就绪。
+4.通过getByRole点击开始授权按钮，监听context的page事件取得实际popup对象并等待授权页载入。
+5.读取商户页消息台账，核对origin_class、source_match、message_type、received_state、result、decision与reason。
+6.等待authorized、declined、timed_out或user_closed终态，并让页面关闭仍存活的popup。
+7.按case_id汇总消息数、接受数、拒绝数和确认数，把实际POST按到达顺序写入authorization_requests.csv。
+8.在商户页终态保存case_id.png，并将场景、消息、确认请求与截图集合写入reconciliation_summary.json。
+9.让业务入口覆盖reports和evidence，在合同错误或流程未闭合时返回非零状态并清除未完成交付。
