@@ -1,0 +1,9 @@
+内容发布平台通过跨源弹窗连接外部账号。授权页会向商户页发送结果消息，商户页需要区分可信来源、当前弹窗、正确state和合法结果。若把消息内容直接当成可信依据，过期回调或其他窗口的消息可能触发错误确认；终态建立后再次收到相同结果，也不能重复提交授权码。
+
+input_data包含authorization_cases.json、popup_protocol.json、merchant.html、provider.html、starter、package.json、README、执行入口和Playwright依赖。案例文件给出本批授权路径和预期终态；协议文件给出消息类型、来源模式、确认端点、超时与交付路径；两个页面分别承载商户端状态机和跨源授权流程。
+
+请在与input_data同级的output/src/popup_authorization.spec.mjs完成Playwright程序，并从input_data执行npm run process。每个案例使用独立browser context，从商户页按钮打开真实popup并保留对应窗口对象。消息到达后依次检查event.origin、event.source、消息类型、state和结果枚举。
+
+通过协议检查的approved消息只能向本地确认端点提交一次，declined直接进入拒绝终态。来源或state不符的消息只写入消息台账，页面继续等待直到超时；用户主动关闭弹窗形成独立终态；终态后的重复消息不得改变状态或再次确认。
+
+交付output/src/popup_authorization.spec.mjs、output/reports/scenario_results.csv、output/reports/message_audit.csv、output/reports/authorization_requests.csv、output/reports/reconciliation_summary.json，以及output/evidence下按case_id命名的页面截图。对账摘要从案例、三份业务报告和截图集合计算覆盖、终态、确认幂等与消息关系。每次执行覆盖旧报告和截图，不得修改fixtures、rules、app、starter与tools；合同无效或授权流程未闭合时返回非零状态，并清除未完成交付。
