@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "task_key": "id:10711",
+  "result": "PASS",
+  "scanned_sources": 214,
+  "violations": [],
+  "environment_contract": {
+    "valid": true,
+    "first_line": "操作系统： Windows11、macOS或主流64位Linux。"
+  },
+  "rubric_contract": {
+    "valid": true,
+    "total_score": 100,
+    "item_score_sum": 100,
+    "item_count": 8,
+    "gate_count": 2,
+    "items": [
+      {
+        "index": 1,
+        "title": "1. 输入合同与案例隔离",
+        "score": 14,
+        "missing": [],
+        "priority": "Gate项",
+        "level": "L2"
+      },
+      {
+        "index": 2,
+        "title": "2. 真实弹窗与来源窗口检查",
+        "score": 14,
+        "missing": [],
+        "priority": "Gate项",
+        "level": "L7"
+      },
+      {
+        "index": 3,
+        "title": "3. 消息类型、state与结果裁决",
+        "score": 13,
+        "missing": [],
+        "priority": "高权重项",
+        "level": "L6"
+      },
+      {
+        "index": 4,
+        "title": "4. 授权终态与弹窗收口",
+        "score": 12,
+        "missing": [],
+        "priority": "高权重项",
+        "level": "L7"
+      },
+      {
+        "index": 5,
+        "title": "5. 确认请求与重复消息幂等",
+        "score": 12,
+        "missing": [],
+        "priority": "高权重项",
+        "level": "L7"
+      },
+      {
+        "index": 6,
+        "title": "6. 三份业务报告",
+        "score": 13,
+        "missing": [],
+        "priority": "高权重项",
+        "level": "L9"
+      },
+      {
+        "index": 7,
+        "title": "7. 对账摘要与跨产物闭合",
+        "score": 12,
+        "missing": [],
+        "priority": "普通项",
+        "level": "L9"
+      },
+      {
+        "index": 8,
+        "title": "8. Playwright交付与失败收口",
+        "score": 10,
+        "missing": [],
+        "priority": "普通项",
+        "level": "L10"
+      }
+    ]
+  },
+  "task_spec": {
+    "valid": true,
+    "column_count": 2,
+    "task_asset_id": "playwright_popup_origin_message_arbitration",
+    "forbidden_labels": []
+  },
+  "answer_sheets": [
+    "交付物答案清单",
+    "固定字段答案",
+    "固定集合答案",
+    "固定数值答案",
+    "允许变体答案"
+  ],
+  "humanizer_score": 47,
+  "manual_semantic_review": "PASS",
+  "windows_static_portability": "PASS",
+  "actions_triggered": false,
+  "business_entry_run_locally": false,
+  "attachments_sha256": {
+    "输入数据包.zip": "9c4322e63d95815f719d4ae7aaced8e215aa668595d25e89b545af44e85c00e5",
+    "reference.zip": "a110b5fa50d8a7c576c9fa735af37875c1f5e452a1698c9368246a60d024d7e0",
+    "关键标准答案.xlsx": "63b440b8a4f9f63fbec11000f446b70e120e7155f12d4e683bb6803b3ef06438",
+    "任务规格转化.xlsx": "358b4b7942a313488eac132821e2f898e18b1982e90325d32884614abb50fdcf"
+  },
+  "online_ai_detector_used_as_conclusion": false
+}
