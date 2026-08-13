@@ -1,0 +1,5 @@
+操作系统： Windows11、macOS或主流64位Linux。
+
+主软件为Playwright1.62兼容版本，配合本机Chrome或兼容Chromium创建隔离context、操作弹窗、接收跨源消息并保存截图。Node.js20或更高兼容版本负责执行程序、提供随机回环端口以及读写JSON、CSV和PNG。
+
+执行账号需要读取input_data中的app、fixtures、rules、starter、tools和随包依赖，并能在同级output目录写入源码、报告与截图。当前输入规模适合普通64位CPU与常规办公内存，不使用GPU；磁盘需要容纳输入包、浏览器缓存和全部交付。需设置有限超时，覆盖本批授权流程并避免异常无限等待。
